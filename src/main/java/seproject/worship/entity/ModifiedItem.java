@@ -1,8 +1,11 @@
 package seproject.worship.entity;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
 public class ModifiedItem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,6 +18,6 @@ public class ModifiedItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private Boolean add;
+    private char isAdd;
     private Integer count;
 }

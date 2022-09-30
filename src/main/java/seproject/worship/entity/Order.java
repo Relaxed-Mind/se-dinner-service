@@ -1,5 +1,6 @@
 package seproject.worship.entity;
 
+import lombok.Getter;
 import seproject.worship.enumpack.OrderStatus;
 
 import javax.persistence.*;
@@ -9,8 +10,10 @@ import java.util.List;
 
 @Table(name = "orders")
 @Entity
-public class Order {
+@Getter
+public class Order extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -18,16 +21,15 @@ public class Order {
     private Customer customer;
 
     @OneToMany(mappedBy = "order")
-    private List<Menu> orderMenu = new ArrayList<>();
+    private List<OrderMenu> orderMenu = new ArrayList<>();
 
     @OneToMany(mappedBy = "order")
     private List<ModifiedItem> modifiedItems = new ArrayList<>();
 
     private String destinationAddress;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
     private LocalDateTime reservationDate;
-    private LocalDateTime createdTime;
-    private LocalDateTime modifiedTime;
-
-
 }
