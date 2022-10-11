@@ -8,21 +8,22 @@ import java.util.List;
 
 @Entity
 @Getter
-public class OrderMenu {
+public class CartMenu {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
-
     private Integer orderPrice;
+
     private Integer count;
 
-    @OneToMany(mappedBy = "orderMenu")
+    @OneToMany(mappedBy = "cartMenu")
     private List<ModifiedItem> modifiedItems = new ArrayList<>();
 }

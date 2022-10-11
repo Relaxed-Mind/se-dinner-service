@@ -21,10 +21,7 @@ public class Order extends BaseTimeEntity {
     private Customer customer;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderMenu> orderMenu = new ArrayList<>();
-
-    @OneToMany(mappedBy = "order")
-    private List<ModifiedItem> modifiedItems = new ArrayList<>();
+    private List<OrderMenu> orderMenus = new ArrayList<>();
 
     private String destinationAddress;
 
