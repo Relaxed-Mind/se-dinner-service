@@ -1,4 +1,4 @@
-package seproject.worship.entity;
+package seproject.worship.config;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

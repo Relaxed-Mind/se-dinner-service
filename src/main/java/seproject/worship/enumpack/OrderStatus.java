@@ -1,5 +1,5 @@
 package seproject.worship.enumpack;
 
 public enum OrderStatus {
-    RECEIVING, REFUSED, CONFIRMED, COOKING, DELIVERING, DONE
+    RECEIVING, CANCELED, REFUSED, CONFIRMED, COOKING, DELIVERING, DONE
 }

@@ -1,6 +1,7 @@
 package seproject.worship.entity;
 
 import lombok.Getter;
+import seproject.worship.config.BaseTimeEntity;
 import seproject.worship.enumpack.OrderStatus;
 
 import javax.persistence.*;
