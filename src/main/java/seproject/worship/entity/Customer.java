@@ -13,9 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Customer {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    private Long id;
 
-    private String id;
+    private String cid;
     private String pw;
     private String name;
     private String phoneNum;
@@ -23,15 +23,15 @@ public class Customer {
     private String cardNum;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
 
     @Builder
-    public Customer(String id, String pw, String name, String phoneNum, String address, String cardNum){
-        this.id = id;
+    public Customer(String cid, String pw, String name, String phoneNum, String address, String cardNum){
+        this.cid = cid;
         this.pw = pw;
         this.name = name;
         this.phoneNum = phoneNum;
