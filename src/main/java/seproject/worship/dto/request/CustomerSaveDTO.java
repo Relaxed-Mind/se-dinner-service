@@ -10,4 +10,5 @@ public class CustomerSaveDTO {
     private String name;
     private String address;
     private String cardNum;
+    private String phoneNum;
 }

@@ -21,12 +21,14 @@ public class CustomerService {
                 .name(dto.getName())
                 .address(dto.getAddress())
                 .cardNum(dto.getCardNum())
+                .phoneNum(dto.getPhoneNum())
                 .build();
     }
 
     public Map saveCustomer(CustomerSaveDTO dto) {
         Customer customer = CustomerSaveDTOtoEntity(dto);
-        //예외처리 추가해야함
+        //예외처리 추가해야함 (중복)
+
         customerRepository.save(customer);
 
         Map<String, Object> map = new HashMap<>();
