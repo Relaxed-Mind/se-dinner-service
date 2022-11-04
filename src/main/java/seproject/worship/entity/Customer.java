@@ -38,4 +38,10 @@ public class Customer {
         this.address = address;
         this.cardNum = cardNum;
     }
+
+    public void modifyInfo(String address, String cardNum, String phoneNum){
+        this.address = address;
+        this.cardNum = cardNum;
+        this.phoneNum = phoneNum;
+    }
 }

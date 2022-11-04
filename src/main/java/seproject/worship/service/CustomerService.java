@@ -3,8 +3,10 @@ package seproject.worship.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.CustomerLoginDTO;
+import seproject.worship.dto.request.CustomerModifyInfoDTO;
 import seproject.worship.dto.request.CustomerSaveDTO;
 import seproject.worship.dto.response.CustomerLoadInfoDTO;
 import seproject.worship.entity.Customer;
@@ -62,6 +64,23 @@ public class CustomerService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "loadInfo error");
         }else{
             return new CustomerLoadInfoDTO(customer.get());
+        }
+    }
+
+    @Transactional
+    public Map customerModifyInfo(CustomerModifyInfoDTO dto) {
+        Optional<Customer> customer = customerRepository.findById(dto.getCustomerId());
+        if(customer.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found at modifying error");
+        } else{
+            customer.get().modifyInfo(dto.getAddress(), dto.getCardNum(), dto.getPhoneNum());
+            if(customer.get().getAddress().equals(dto.getAddress())){ //영속성 컨텍스트 실험
+                Map<String, Object> map = new HashMap<>();
+                map.put("customerId", customer.get().getId());
+                return map;
+            }else{
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "modify logic error");
+            }
         }
     }
 }

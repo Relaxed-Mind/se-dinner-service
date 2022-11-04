@@ -3,6 +3,7 @@ package seproject.worship.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import seproject.worship.dto.request.CustomerLoginDTO;
+import seproject.worship.dto.request.CustomerModifyInfoDTO;
 import seproject.worship.dto.request.CustomerSaveDTO;
 import seproject.worship.dto.response.CustomerLoadInfoDTO;
 import seproject.worship.service.CustomerService;
@@ -27,5 +28,11 @@ public class CustomerController {
     public CustomerLoadInfoDTO customerLoadInfo(@PathVariable Long customerId){
         return customerService.customerLoadInfo(customerId);
     }
+
+    @PutMapping()
+    public Map customerModifyInfo(@RequestBody CustomerModifyInfoDTO dto){
+        return customerService.customerModifyInfo(dto);
+    }
+
 
 }
