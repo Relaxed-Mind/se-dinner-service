@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class CustomerSaveDTO {
-    private String id;
+    private String cid;
     private String pw;
     private String name;
     private String address;

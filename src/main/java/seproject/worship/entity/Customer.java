@@ -22,9 +22,8 @@ public class Customer {
     private String address;
     private String cardNum;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+    @OneToMany(mappedBy = "customer")
+    private List<CartMenu> cartMenus = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();

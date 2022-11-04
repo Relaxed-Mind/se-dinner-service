@@ -24,7 +24,7 @@ public class CustomerService {
 
     public Customer CustomerSaveDTOtoEntity(CustomerSaveDTO dto){
         return Customer.builder()
-                .cid(dto.getId())
+                .cid(dto.getCid())
                 .pw(dto.getPw())
                 .name(dto.getName())
                 .address(dto.getAddress())
