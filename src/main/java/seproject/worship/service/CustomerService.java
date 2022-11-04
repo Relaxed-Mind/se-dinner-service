@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.CustomerLoginDTO;
 import seproject.worship.dto.request.CustomerSaveDTO;
+import seproject.worship.dto.response.CustomerLoadInfoDTO;
 import seproject.worship.entity.Customer;
 import seproject.worship.repository.CustomerRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,6 +53,15 @@ public class CustomerService {
             map.put("customerId", customer.get().getId());
             map.put("cid", customer.get().getCid());
             return map;
+        }
+    }
+
+    public CustomerLoadInfoDTO customerLoadInfo(Long customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "loadInfo error");
+        }else{
+            return new CustomerLoadInfoDTO(customer.get());
         }
     }
 }
