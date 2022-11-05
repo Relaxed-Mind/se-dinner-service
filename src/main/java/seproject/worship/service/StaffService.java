@@ -22,7 +22,7 @@ public class StaffService {
 
         String dtoSid = staffLoginDTO.getSid();
         String dtoPw = staffLoginDTO.getPw();
-        Optional<Staff> staff = staffRepository.findBySidAndpw(dtoSid, dtoPw);
+        Optional<Staff> staff = staffRepository.findBySidAndPw(dtoSid, dtoPw);
 
         if(staff.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"login error");
