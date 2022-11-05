@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
-    Optional<Staff> findBySidAndpw(String Sid, String pw);
+    Optional<Staff> findBySidAndPw(String Sid, String pw);
 
 }
