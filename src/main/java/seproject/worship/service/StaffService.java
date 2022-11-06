@@ -47,7 +47,7 @@ public class StaffService {
 
         Optional<Order> orderFindById = orderRepository.findById(id);
         orderFindById.get().staffChangeOrderStatus(orderStatus);
-        System.out.println(orderFindById.get().getOrderStatus());
+
         return id;
     }
 }
