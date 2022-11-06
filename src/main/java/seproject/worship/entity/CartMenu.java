@@ -20,10 +20,12 @@ public class CartMenu {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
+    @OneToMany(mappedBy = "cartMenu")
+    private List<ModifiedItem> modifiedItems = new ArrayList<>();
+
     private Integer orderPrice;
 
     private Integer count;
 
-    @OneToMany(mappedBy = "cartMenu")
-    private List<ModifiedItem> modifiedItems = new ArrayList<>();
+
 }
