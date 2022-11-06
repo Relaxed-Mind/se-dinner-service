@@ -1,6 +1,7 @@
 package seproject.worship.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +18,16 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @PostMapping
-    public Map itemAdd(@RequestBody List<ItemAddDTO> list){
+    @PostMapping("/item")
+    public List itemAdd(@RequestBody List<ItemAddDTO> list){
+
+        System.out.println(list.size());
         return itemService.itemAdd(list);
     }
+
+    @GetMapping("/item")
+    public List itemListLoad(){
+        return itemService.itemListLoad();
+    }
+
 }

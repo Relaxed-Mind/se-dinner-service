@@ -7,5 +7,5 @@ import lombok.Setter;
 public class ItemAddDTO {
 
     private Long id;
-    private String addQuantity;
+    private Integer addQuantity;
 }

@@ -21,5 +21,11 @@ public class Menu {
     private String menuUrl;
 
     @OneToMany(mappedBy = "menu")
-    private List<Item> items = new ArrayList<>();
+    private List<MenuItem> menuItems = new ArrayList<>();
+
+    @OneToMany(mappedBy= "menu")
+    private List<OrderMenu> orderMenus = new ArrayList<>();
+
+    @OneToMany(mappedBy="menu")
+    private List<CartMenu> cartMenus = new ArrayList<>();
 }
