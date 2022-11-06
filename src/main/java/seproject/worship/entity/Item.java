@@ -1,5 +1,6 @@
 package seproject.worship.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -28,4 +29,15 @@ public class Item {
         this.stockQuantity+=addQuantity;
     }
 
+    public Item(){}
+    @Builder
+    public Item(Long id, String itemUrl, List<MenuItem> menuItems, List<ModifiedItem> modifiedItems, String name, Integer price, Integer stockQuantity) {
+        this.id = id;
+        this.itemUrl = itemUrl;
+        this.menuItems = menuItems;
+        this.modifiedItems = modifiedItems;
+        this.name = name;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+    }
 }

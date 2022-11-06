@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.ItemAddDTO;
 import seproject.worship.dto.response.ItemAddResponseDTO;
+import seproject.worship.dto.response.ItemListLoadDTO;
 import seproject.worship.entity.Item;
 import seproject.worship.repository.ItemRepository;
 
@@ -24,7 +25,7 @@ public class ItemService {
     @Transactional
     public List itemAdd(List<ItemAddDTO> list){
 
-
+        //추가한게 없는 예외사항 추가해야 함
         List<ItemAddResponseDTO> modifiedItem = new ArrayList<>();
 
         for(ItemAddDTO itemAddDTO : list) {
@@ -41,4 +42,22 @@ public class ItemService {
         }
         return modifiedItem;
     }
+
+    @Transactional(readOnly = true)
+    public List itemListLoad(){
+        List<ItemListLoadDTO> findAllItem = new ArrayList<>();
+        List<Item> allItem = itemRepository.findAll();
+
+        for(Item item : allItem){
+            ItemListLoadDTO entityToDtoItem = ItemListLoadDTO.builder()
+                    .id(item.getId())
+                    .itemUrl(item.getItemUrl())
+                    .name(item.getName())
+                    .stockQuantity(item.getStockQuantity()).build();
+            findAllItem.add(entityToDtoItem);
+        }
+        return findAllItem;
+    }
+
+
 }
