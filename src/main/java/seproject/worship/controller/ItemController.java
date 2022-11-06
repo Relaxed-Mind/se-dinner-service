@@ -24,4 +24,10 @@ public class ItemController {
         System.out.println(list.size());
         return itemService.itemAdd(list);
     }
+
+    @GetMapping("/item")
+    public List itemListLoad(){
+        return itemService.itemListLoad();
+    }
+
 }
