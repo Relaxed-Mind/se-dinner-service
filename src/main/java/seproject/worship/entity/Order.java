@@ -1,5 +1,6 @@
 package seproject.worship.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import seproject.worship.config.BaseTimeEntity;
 import seproject.worship.enumpack.OrderStatus;
@@ -30,4 +31,19 @@ public class Order extends BaseTimeEntity {
     private OrderStatus orderStatus;
 
     private LocalDateTime reservationDate;
+
+    public void staffChangeOrderStatus(OrderStatus orderStatus){
+        this.orderStatus=orderStatus;
+    }
+
+    public Order(){}
+    @Builder
+    public Order(Long id, Customer customer, List<OrderMenu> orderMenus, String destinationAddress, OrderStatus orderStatus, LocalDateTime reservationDate) {
+        this.id = id;
+        this.customer = customer;
+        this.orderMenus = orderMenus;
+        this.destinationAddress = destinationAddress;
+        this.orderStatus = orderStatus;
+        this.reservationDate = reservationDate;
+    }
 }
