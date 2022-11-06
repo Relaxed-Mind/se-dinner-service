@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import seproject.worship.dto.request.StaffChangeOrderStatusDTO;
 import seproject.worship.dto.request.StaffLoginDTO;
 import seproject.worship.service.StaffService;
 
@@ -18,6 +19,11 @@ public class StaffController {
     @PostMapping("/staff")
     public Map staffLogin(@RequestBody StaffLoginDTO staffLoginDTO){
         return staffService.staffLogin(staffLoginDTO);
+    }
+
+    @PostMapping("/staff/orders/status")
+    public Long staffChangeOrderStatus(@RequestBody StaffChangeOrderStatusDTO staffChangeOrderStatusDTO) {
+        return staffService.staffChangeOrderStatus(staffChangeOrderStatusDTO);
     }
 
 }
