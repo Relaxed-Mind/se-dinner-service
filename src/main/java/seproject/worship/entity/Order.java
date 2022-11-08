@@ -42,7 +42,6 @@ public class Order extends BaseTimeEntity {
     public Order(Long id, Customer customer, String destinationAddress, OrderStatus orderStatus, LocalDateTime reservationDate) {
         this.id = id;
         this.customer = customer;
-        this.orderMenus = orderMenus;
         this.destinationAddress = destinationAddress;
         this.orderStatus = orderStatus;
         this.reservationDate = reservationDate;

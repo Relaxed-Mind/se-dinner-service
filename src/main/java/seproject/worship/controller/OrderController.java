@@ -2,7 +2,9 @@ package seproject.worship.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import seproject.worship.dto.response.ViewSpecificMenuDTO;
 import seproject.worship.service.OrderService;
 
 import java.util.Map;
@@ -15,5 +17,10 @@ public class OrderController {
     @GetMapping("/shop")
     public Map loadMenuList(){
         return orderService.loadMenuList();
+    }
+
+    @GetMapping("/shop/{menuId}")
+    public ViewSpecificMenuDTO viewSpecificMenu(@PathVariable Long menuId){
+        return orderService.viewSpecificMenu(menuId);
     }
 }
