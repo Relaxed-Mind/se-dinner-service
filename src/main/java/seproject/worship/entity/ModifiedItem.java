@@ -22,6 +22,5 @@ public class ModifiedItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private char isAdd;
     private Integer count;
 }

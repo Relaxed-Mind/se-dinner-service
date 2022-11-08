@@ -1,6 +1,7 @@
 package seproject.worship.entity;
 
 import lombok.Getter;
+import seproject.worship.enumpack.StyleStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,9 +24,11 @@ public class CartMenu {
     @OneToMany(mappedBy = "cartMenu")
     private List<ModifiedItem> modifiedItems = new ArrayList<>();
 
-    private Integer orderPrice;
+    private Integer cartMenuPrice;
 
     private Integer count;
 
+    @Enumerated(EnumType.STRING)
+    private StyleStatus styleStatus;
 
 }

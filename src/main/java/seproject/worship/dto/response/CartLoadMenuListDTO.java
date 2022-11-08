@@ -13,13 +13,13 @@ public class CartLoadMenuListDTO {
     private String menuName;
     private String menuURL;
     private Integer count;
-    private Integer totalPrice;
+    private Integer cartMenuPrice;
 
     public CartLoadMenuListDTO(Menu menu, CartMenu cartMenu){
         this.menuName = menu.getName();
         this.menuURL = menu.getMenuUrl();
         this.count = cartMenu.getCount();
-        this.totalPrice = cartMenu.getOrderPrice() * cartMenu.getCount();
+        this.cartMenuPrice = cartMenu.getCartMenuPrice();
     }
 
     public Map<String, Object> CartLoadMenuListDTOtoMap(){
@@ -27,7 +27,7 @@ public class CartLoadMenuListDTO {
         map.put("menuName", this.menuName);
         map.put("menuURL", this.menuURL);
         map.put("count", this.count);
-        map.put("totalPrice", this.totalPrice);
+        map.put("cartMenuPrice", this.cartMenuPrice);
 
         return map;
     }
