@@ -31,9 +31,6 @@ public class OrderMenu {
     @Enumerated(EnumType.STRING)
     private StyleStatus styleStatus;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-
     @OneToMany(mappedBy = "orderMenu")
     private List<ModifiedItem> modifiedItems = new ArrayList<>();
 
