@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.StaffChangeOrderStatusDTO;
 import seproject.worship.dto.request.StaffLoginDTO;
+import seproject.worship.dto.request.StaffRefuseOrderDTO;
 import seproject.worship.dto.response.StaffLoadOrderListDTO;
 import seproject.worship.entity.Order;
 import seproject.worship.entity.OrderMenu;
@@ -79,6 +80,17 @@ public class StaffService {
         return  responseMap;
     }
 
+    @Transactional
+    public Map staffRefuseOrder(StaffRefuseOrderDTO staffRefuseOrderDTO){
+        Optional<Order> orderFindById = orderRepository.findById(staffRefuseOrderDTO.getOrderId());
+        orderFindById.get().staffChangeOrderStatus(OrderStatus.REFUSED);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("orderId",orderFindById.get().getId());
+        OrderStatus orderStatus = orderFindById.get().getOrderStatus();
+        return map;
+
+    }
 }
 
 

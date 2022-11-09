@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import seproject.worship.dto.request.StaffChangeOrderStatusDTO;
 import seproject.worship.dto.request.StaffLoginDTO;
+import seproject.worship.dto.request.StaffRefuseOrderDTO;
 import seproject.worship.dto.response.StaffLoadOrderListDTO;
 import seproject.worship.entity.OrderMenu;
 import seproject.worship.service.StaffService;
@@ -35,4 +36,8 @@ public class StaffController {
         return staffService.staffLoadOrderList();
     }
 
+    @PostMapping("/staff/orders/refusal")
+    public Map staffRefuseOrder(@RequestBody StaffRefuseOrderDTO staffRefuseOrderDTO){
+        return staffService.staffRefuseOrder(staffRefuseOrderDTO);
+    }
 }
