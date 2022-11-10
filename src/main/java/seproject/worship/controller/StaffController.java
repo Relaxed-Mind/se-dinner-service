@@ -25,7 +25,7 @@ public class StaffController {
         return staffService.staffLogin(staffLoginDTO);
     }
 
-    @PostMapping("/staff/orders/status")
+    @PostMapping("/staff/order/status")
     public Map staffChangeOrderStatus(@RequestBody StaffChangeOrderStatusDTO staffChangeOrderStatusDTO) {
         return staffService.staffChangeOrderStatus(staffChangeOrderStatusDTO);
     }
@@ -35,19 +35,24 @@ public class StaffController {
         return staffService.staffLoadOrderList();
     }
 
-    @PostMapping("/staff/orders/refusal")
+    @PostMapping("/staff/order/refusal")
     public Map staffRefuseOrder(@RequestBody StaffRefuseOrderDTO staffRefuseOrderDTO){
         return staffService.staffRefuseOrder(staffRefuseOrderDTO);
     }
 
-    @PostMapping("/staff/orders/acceptance")
+    @PostMapping("/staff/order/acceptance")
     public Map staffAcceptOrder(@RequestBody StaffAcceptOrderDTO staffAcceptOrderDTO){
         return staffService.staffAcceptOrder(staffAcceptOrderDTO);
     }
 
-    @GetMapping("/staff/orders/{orderId}")
+    @GetMapping("/staff/order/{orderId}")
     public StaffViewSpecificOrderDTO staffViewSpecificOrder(@PathVariable Long orderId){
 
         return staffService.staffViewSpecificOrder(orderId);
+    }
+
+    @GetMapping("/staff/orders/acceptace")
+    public Map staffLoadAcceptOrderList(){
+        return staffService.staffLoadAcceptOrderList();
     }
 }

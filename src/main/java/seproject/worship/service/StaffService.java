@@ -9,6 +9,7 @@ import seproject.worship.dto.request.StaffAcceptOrderDTO;
 import seproject.worship.dto.request.StaffChangeOrderStatusDTO;
 import seproject.worship.dto.request.StaffLoginDTO;
 import seproject.worship.dto.request.StaffRefuseOrderDTO;
+import seproject.worship.dto.response.StaffLoadAcceptOrderListDTO;
 import seproject.worship.dto.response.StaffLoadOrderListDTO;
 import seproject.worship.dto.response.StaffViewSpecificOrderDTO;
 import seproject.worship.dto.response.StaffViewSpecificOrderOrderMenuDTO;
@@ -112,6 +113,7 @@ public class StaffService {
         staffViewSpecificOrderDTO.setOrderId(orderId);
         Optional<Order> orderFindById = orderRepository.findById(orderId);
         List<OrderMenu> orderMenusFindById = orderFindById.get().getOrderMenus();
+
         for(OrderMenu orderMenu : orderMenusFindById){
             StaffViewSpecificOrderOrderMenuDTO staffViewSpecificOrderOrderMenuDTO =
                     makeStaffViewSpecificOrderOrderMenuDTO(orderMenu.getOrderMenuPrice(), orderMenu.getCount(), orderMenu.getStyleStatus());
@@ -125,12 +127,21 @@ public class StaffService {
             List<ModifiedItem> modifiedItems = orderMenu.getModifiedItems();
             for(ModifiedItem modifiedItem : modifiedItems){
                 Map<String, Object> map = new HashMap<>();
-                map.put("modifiedItemName",modifiedItem.getItem().getName());
                 map.put("modifiedItemCount",modifiedItem.getCount());
+                map.put("modifiedItemName",modifiedItem.getItem().getName());
+                staffViewSpecificOrderOrderMenuDTO.getModifiedItems().add(map);
             }
+            staffViewSpecificOrderDTO.getOrderMenus().add(staffViewSpecificOrderOrderMenuDTO);
         }
-
+        System.out.println("staffViewSpecificOrderDTO"+staffViewSpecificOrderDTO.getOrderMenus().size());
         return staffViewSpecificOrderDTO;
+    }
+
+    @Transactional
+    public Map staffLoadAcceptOrderList(){
+        List<StaffLoadAcceptOrderListDTO> staffLoadAcceptOrderListDTOS = new ArrayList<>();
+        List<Order> receivingOrders = orderRepository.findByOrderStatus(OrderStatus.CONFIRMED);
+        return null;
     }
 
     public StaffViewSpecificOrderOrderMenuDTO makeStaffViewSpecificOrderOrderMenuDTO(Integer orderMenuPrice, Integer count, StyleStatus styleStatus){
