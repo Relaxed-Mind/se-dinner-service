@@ -11,13 +11,13 @@ import seproject.worship.enumpack.OrderStatus;
 @ToString
 public class StaffChangeOrderStatusDTO {
 
-    Long id;
+    Long orderId;
     OrderStatus orderStatus;
 
     @JsonCreator
-    public StaffChangeOrderStatusDTO(@JsonProperty("id") Long id,
+    public StaffChangeOrderStatusDTO(@JsonProperty("orderId") Long orderId,
                                      @JsonProperty("orderStatus") OrderStatus orderStatus){
-        this.id=id;
+        this.orderId=orderId;
         this.orderStatus=orderStatus;
     }
 }
