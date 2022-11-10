@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import seproject.worship.dto.request.StaffAcceptOrderDTO;
 import seproject.worship.dto.request.StaffChangeOrderStatusDTO;
 import seproject.worship.dto.request.StaffLoginDTO;
 import seproject.worship.dto.request.StaffRefuseOrderDTO;
@@ -27,7 +28,7 @@ public class StaffController {
     }
 
     @PostMapping("/staff/orders/status")
-    public Long staffChangeOrderStatus(@RequestBody StaffChangeOrderStatusDTO staffChangeOrderStatusDTO) {
+    public Map staffChangeOrderStatus(@RequestBody StaffChangeOrderStatusDTO staffChangeOrderStatusDTO) {
         return staffService.staffChangeOrderStatus(staffChangeOrderStatusDTO);
     }
 
@@ -39,5 +40,15 @@ public class StaffController {
     @PostMapping("/staff/orders/refusal")
     public Map staffRefuseOrder(@RequestBody StaffRefuseOrderDTO staffRefuseOrderDTO){
         return staffService.staffRefuseOrder(staffRefuseOrderDTO);
+    }
+
+    @PostMapping("/staff/orders/acceptance")
+    public Map staffAcceptOrder(@RequestBody StaffAcceptOrderDTO staffAcceptOrderDTO){
+        return staffService.staffAcceptOrder(staffAcceptOrderDTO);
+    }
+
+    @GetMapping("/staff/orders/{orderId}")
+    public Map staffViewSpecificOrder(){
+                return null;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import seproject.worship.dto.request.StaffAcceptOrderDTO;
 import seproject.worship.dto.request.StaffChangeOrderStatusDTO;
 import seproject.worship.dto.request.StaffLoginDTO;
 import seproject.worship.dto.request.StaffRefuseOrderDTO;
@@ -45,14 +46,16 @@ public class StaffService {
     }
 
     @Transactional
-    public Long staffChangeOrderStatus(StaffChangeOrderStatusDTO staffChangeOrderStatusDTO){
-        Long id = staffChangeOrderStatusDTO.getId();
+    public Map staffChangeOrderStatus(StaffChangeOrderStatusDTO staffChangeOrderStatusDTO){
+        Long id = staffChangeOrderStatusDTO.getOrderId();
         OrderStatus orderStatus = staffChangeOrderStatusDTO.getOrderStatus();
 
         Optional<Order> orderFindById = orderRepository.findById(id);
         orderFindById.get().staffChangeOrderStatus(orderStatus);
 
-        return id;
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId",orderFindById.get().getId());
+        return map;
     }
 
     @Transactional
@@ -87,9 +90,18 @@ public class StaffService {
 
         Map<String,Object> map = new HashMap<>();
         map.put("orderId",orderFindById.get().getId());
-        OrderStatus orderStatus = orderFindById.get().getOrderStatus();
         return map;
 
+    }
+
+    @Transactional
+    public Map staffAcceptOrder(StaffAcceptOrderDTO staffAcceptOrderDTO){
+        Optional<Order> orderFingById = orderRepository.findById(staffAcceptOrderDTO.getOrderId());
+        orderFingById.get().staffChangeOrderStatus(OrderStatus.CONFIRMED);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId",orderFingById.get().getId());
+        return map;
     }
 }
 
