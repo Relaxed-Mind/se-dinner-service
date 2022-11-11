@@ -24,7 +24,7 @@ public class CartMenu {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @OneToMany(mappedBy = "cartMenu")
+    @OneToMany(mappedBy = "cartMenu", cascade = CascadeType.ALL)
     private List<ModifiedItem> modifiedItems = new ArrayList<>();
 
     private Integer cartMenuPrice;

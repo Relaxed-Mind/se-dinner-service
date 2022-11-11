@@ -25,10 +25,14 @@ public class CartController {
         return cartService.cartLoadMenuList(customerId);
     }
 
-    @GetMapping("/{customerId}/{cartMenuId}")
-    public CartViewSpecificMenuDTO cartViewSpecificMenu(@PathVariable Long customerId,
-                                                        @PathVariable Long cartMenuId){
-        return cartService.cartViewSpecificMenu(customerId, cartMenuId);
+    @GetMapping("/{cartMenuId}")
+    public CartViewSpecificMenuDTO cartViewSpecificMenu(@PathVariable Long cartMenuId){
+        return cartService.cartViewSpecificMenu(cartMenuId);
+    }
+
+    @DeleteMapping("/{cartMenuId}")
+    public Map cartDeleteMenu(@PathVariable Long cartMenuId){
+        return cartService.cartDeleteMenu(cartMenuId);
     }
 
 }

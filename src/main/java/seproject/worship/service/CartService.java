@@ -88,11 +88,20 @@ public class CartService {
     }
 
 
-    public CartViewSpecificMenuDTO cartViewSpecificMenu(Long customerId, Long cartMenuId) {
+    public CartViewSpecificMenuDTO cartViewSpecificMenu(Long cartMenuId) {
         Optional<CartMenu> cartMenu = cartMenuRepository.findById(cartMenuId);
         List<ModifiedItem> modifiedItems = modifiedItemRepository.findAllByCartMenuId(cartMenuId);
         //예외처리
 
         return new CartViewSpecificMenuDTO(cartMenu.get(), modifiedItems);
+    }
+
+    public Map cartDeleteMenu(Long cartMenuId) {
+        Optional<CartMenu> cartMenu = cartMenuRepository.findById(cartMenuId);
+        //예외처리
+        cartMenuRepository.delete(cartMenu.get());
+        Map<String, String> map = new HashMap<>();
+        map.put("delete", "ok");
+        return map;
     }
 }

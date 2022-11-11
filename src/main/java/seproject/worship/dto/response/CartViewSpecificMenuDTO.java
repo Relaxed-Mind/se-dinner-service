@@ -16,7 +16,7 @@ public class CartViewSpecificMenuDTO {
     private String menuUrl;
     private String menuName;
     private Integer menuCount;
-    private Integer totalPrice;
+    private Integer cartMenuPrice;
     private String styleStatus;
     private List<Map> foods = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class CartViewSpecificMenuDTO {
         this.menuUrl = menu.getMenuUrl();
         this.menuName = menu.getName();
         this.menuCount = cartMenu.getCount();
-        this.totalPrice = cartMenu.getCartMenuPrice();
+        this.cartMenuPrice = cartMenu.getCartMenuPrice();
         this.styleStatus = cartMenu.getStyleStatus().name();
         for (ModifiedItem modifiedItem : modifiedItems) {
             Map<String, Object> map = new HashMap<>();
