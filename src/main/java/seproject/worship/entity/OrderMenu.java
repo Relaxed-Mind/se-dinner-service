@@ -1,6 +1,9 @@
 package seproject.worship.entity;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import seproject.worship.enumpack.OrderStatus;
 import seproject.worship.enumpack.StyleStatus;
 
 import javax.persistence.*;
@@ -9,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class OrderMenu {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,4 +33,14 @@ public class OrderMenu {
 
     @OneToMany(mappedBy = "orderMenu")
     private List<ModifiedItem> modifiedItems = new ArrayList<>();
+
+    @Builder
+    public OrderMenu(Long id, Menu menu, Order order, Integer orderMenuPrice, Integer count) {
+        this.menu = menu;
+        this.order = order;
+        this.orderMenuPrice = orderMenuPrice;
+        this.count = count;
+
+    }
+
 }
