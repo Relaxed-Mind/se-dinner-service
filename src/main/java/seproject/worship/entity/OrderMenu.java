@@ -35,12 +35,12 @@ public class OrderMenu {
     private List<ModifiedItem> modifiedItems = new ArrayList<>();
 
     @Builder
-    public OrderMenu(Long id, Menu menu, Order order, Integer orderMenuPrice, Integer count) {
+    public OrderMenu(Long id, Menu menu, Order order, Integer orderMenuPrice, Integer count, StyleStatus styleStatus) {
         this.menu = menu;
         this.order = order;
         this.orderMenuPrice = orderMenuPrice;
         this.count = count;
-
+        this.styleStatus = styleStatus;
     }
 
 }

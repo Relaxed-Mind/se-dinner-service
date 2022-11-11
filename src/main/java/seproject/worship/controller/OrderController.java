@@ -1,9 +1,8 @@
 package seproject.worship.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import seproject.worship.dto.request.OrderDTO;
 import seproject.worship.dto.response.ViewSpecificMenuDTO;
 import seproject.worship.dto.response.beforeOrderDTO;
 import seproject.worship.service.OrderService;
@@ -28,5 +27,10 @@ public class OrderController {
     @GetMapping("/order/{customerId}")
     public beforeOrderDTO beforeOrder(@PathVariable Long customerId){
         return orderService.beforeOrder(customerId);
+    }
+    
+    @PostMapping("/order")
+    public Map order(@RequestBody OrderDTO dto){
+        return orderService.order(dto);
     }
 }

@@ -44,4 +44,14 @@ public class ModifiedItem {
         }
     }
 
+    public void setOrderMenu(OrderMenu orderMenu){
+        if(this.orderMenu != null)
+            this.orderMenu.getModifiedItems().remove(this);
+        else{
+            this.orderMenu = orderMenu;
+            if(!orderMenu.getModifiedItems().contains(this))
+                orderMenu.getModifiedItems().add(this);
+        }
+    }
+
 }

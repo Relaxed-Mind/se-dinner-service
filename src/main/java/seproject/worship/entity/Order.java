@@ -24,6 +24,9 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    private String cardNum;
+    private String phoneNum;
+
     @OneToMany(mappedBy = "order")
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
@@ -39,11 +42,13 @@ public class Order extends BaseTimeEntity {
     }
 
     @Builder
-    public Order(Long id, Customer customer, String destinationAddress, OrderStatus orderStatus, LocalDateTime reservationDate) {
-        this.id = id;
+    public Order(Customer customer, String destinationAddress, OrderStatus orderStatus,
+                 LocalDateTime reservationDate, String cardNum, String phoneNum) {
         this.customer = customer;
         this.destinationAddress = destinationAddress;
         this.orderStatus = orderStatus;
         this.reservationDate = reservationDate;
+        this.cardNum = cardNum;
+        this.phoneNum = phoneNum;
     }
 }
