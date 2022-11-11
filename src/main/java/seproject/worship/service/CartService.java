@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.CartAddMenuDTO;
 import seproject.worship.dto.response.CartLoadMenuListDTO;
+import seproject.worship.dto.response.CartViewSpecificMenuDTO;
 import seproject.worship.entity.*;
 import seproject.worship.enumpack.StyleStatus;
 import seproject.worship.repository.*;
@@ -84,5 +85,14 @@ public class CartService {
         for (Map food : foods)
             totalPrice += (Integer) food.get("price");
         return totalPrice;
+    }
+
+
+    public CartViewSpecificMenuDTO cartViewSpecificMenu(Long customerId, Long cartMenuId) {
+        Optional<CartMenu> cartMenu = cartMenuRepository.findById(cartMenuId);
+        List<ModifiedItem> modifiedItems = modifiedItemRepository.findAllByCartMenuId(cartMenuId);
+        //예외처리
+
+        return new CartViewSpecificMenuDTO(cartMenu.get(), modifiedItems);
     }
 }

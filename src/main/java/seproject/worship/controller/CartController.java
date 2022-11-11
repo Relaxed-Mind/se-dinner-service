@@ -3,6 +3,7 @@ package seproject.worship.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import seproject.worship.dto.request.CartAddMenuDTO;
+import seproject.worship.dto.response.CartViewSpecificMenuDTO;
 import seproject.worship.service.CartService;
 
 import java.util.Map;
@@ -24,5 +25,10 @@ public class CartController {
         return cartService.cartLoadMenuList(customerId);
     }
 
+    @GetMapping("/{customerId}/{cartMenuId}")
+    public CartViewSpecificMenuDTO cartViewSpecificMenu(@PathVariable Long customerId,
+                                                        @PathVariable Long cartMenuId){
+        return cartService.cartViewSpecificMenu(customerId, cartMenuId);
+    }
 
 }
