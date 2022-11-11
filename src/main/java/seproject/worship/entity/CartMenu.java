@@ -1,6 +1,8 @@
 package seproject.worship.entity;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import seproject.worship.enumpack.StyleStatus;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class CartMenu {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,4 +34,12 @@ public class CartMenu {
     @Enumerated(EnumType.STRING)
     private StyleStatus styleStatus;
 
+    @Builder
+    public CartMenu(Customer customer, Menu menu, Integer cartMenuPrice, Integer count, StyleStatus styleStatus){
+        this.customer = customer;
+        this.menu = menu;
+        this.cartMenuPrice = cartMenuPrice;
+        this.count = count;
+        this.styleStatus = styleStatus;
+    }
 }
