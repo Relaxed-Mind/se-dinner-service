@@ -51,7 +51,7 @@ public class StaffController {
         return staffService.staffViewSpecificOrder(orderId);
     }
 
-    @GetMapping("/staff/orders/acceptace")
+    @GetMapping("/staff/orders/acceptance")
     public Map staffLoadAcceptOrderList(){
         return staffService.staffLoadAcceptOrderList();
     }

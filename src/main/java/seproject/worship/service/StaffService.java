@@ -16,6 +16,7 @@ import seproject.worship.dto.response.StaffViewSpecificOrderOrderMenuDTO;
 import seproject.worship.entity.*;
 import seproject.worship.enumpack.OrderStatus;
 import seproject.worship.enumpack.StyleStatus;
+import seproject.worship.repository.ItemRepository;
 import seproject.worship.repository.OrderMenuRepository;
 import seproject.worship.repository.OrderRepository;
 import seproject.worship.repository.StaffRepository;
@@ -28,7 +29,7 @@ public class StaffService {
 
     private final StaffRepository staffRepository;
     private final OrderRepository orderRepository;
-    private final OrderMenuRepository orderMenuRepository;
+    private final ItemRepository itemRepository;
 
     @Transactional
     public Map staffLogin(StaffLoginDTO staffLoginDTO){
@@ -68,10 +69,11 @@ public class StaffService {
         for( Order order : receivingOrders){
             StaffLoadOrderListDTO staffLoadOrderListDTO = new StaffLoadOrderListDTO();
             List<Map> staffLoadOrderListDTOOrderMenus = staffLoadOrderListDTO.getOrderMenus();
+            List<OrderMenu> orderMenus = order.getOrderMenus();
             Map<String, Object> map = new HashMap<>();
 
-            List<OrderMenu> orderMenus = order.getOrderMenus();
             for(OrderMenu orderMenu : orderMenus){
+
                 map.put("menuName",orderMenu.getMenu().getName());
                 map.put("count",orderMenu.getCount());
                 staffLoadOrderListDTOOrderMenus.add(map);
@@ -98,11 +100,27 @@ public class StaffService {
 
     @Transactional
     public Map staffAcceptOrder(StaffAcceptOrderDTO staffAcceptOrderDTO){
-        Optional<Order> orderFingById = orderRepository.findById(staffAcceptOrderDTO.getOrderId());
-        orderFingById.get().staffChangeOrderStatus(OrderStatus.CONFIRMED);
+        Optional<Order> orderFindById = orderRepository.findById(staffAcceptOrderDTO.getOrderId());
+        orderFindById.get().staffChangeOrderStatus(OrderStatus.CONFIRMED);
+        List<OrderMenu> OrderMenusOfOrderFindById = orderFindById.get().getOrderMenus();
+
+        for(OrderMenu orderMenu : OrderMenusOfOrderFindById){
+            List<MenuItem> menuItems = orderMenu.getMenu().getMenuItems();
+            for(MenuItem menuItem : menuItems){
+                Optional<Item> itemFindByName = itemRepository.findByName(menuItem.getItem().getName());
+                itemFindByName.get().useQuantity(menuItem.getCount()*orderMenu.getCount());
+            }
+            itemRepository.flush();
+
+            List<ModifiedItem> modifiedItems = orderMenu.getModifiedItems();
+            for(ModifiedItem modifiedItem : modifiedItems){
+                Optional<Item> itemFindByName = itemRepository.findByName(modifiedItem.getItem().getName());
+                itemFindByName.get().useQuantity(modifiedItem.getCount());
+            }
+        }
 
         Map<String, Object> map = new HashMap<>();
-        map.put("orderId",orderFingById.get().getId());
+        map.put("orderId",orderFindById.get().getId());
         return map;
     }
 
@@ -140,8 +158,31 @@ public class StaffService {
     @Transactional
     public Map staffLoadAcceptOrderList(){
         List<StaffLoadAcceptOrderListDTO> staffLoadAcceptOrderListDTOS = new ArrayList<>();
-        List<Order> receivingOrders = orderRepository.findByOrderStatus(OrderStatus.CONFIRMED);
-        return null;
+        List afterConfirmedOrderStatus = getAfterConfirmedOrderStatus();
+        List<Order> ordersFindByStatues =
+                orderRepository.findAllByOrderStatusIn(afterConfirmedOrderStatus);
+
+        for( Order order : ordersFindByStatues){
+
+            StaffLoadAcceptOrderListDTO staffLoadAcceptOrderListDTO = new StaffLoadAcceptOrderListDTO();
+            List<Map> staffLoadAcceptOrderListDTOOrderMenus = staffLoadAcceptOrderListDTO.getOrderMenus();
+            Map<String, Object> map = new HashMap<>();
+
+            List<OrderMenu> orderMenus = order.getOrderMenus();
+            for(OrderMenu orderMenu : orderMenus){
+                map.put("menuName",orderMenu.getMenu().getName());
+                map.put("count",orderMenu.getCount());
+                staffLoadAcceptOrderListDTOOrderMenus.add(map);
+            }
+
+            staffLoadAcceptOrderListDTO.setOrderID(order.getId());
+            staffLoadAcceptOrderListDTO.setCid(order.getCustomer().getCid());
+            staffLoadAcceptOrderListDTOS.add(staffLoadAcceptOrderListDTO);
+        }
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Results",staffLoadAcceptOrderListDTOS);
+        return  responseMap;
+
     }
 
     public StaffViewSpecificOrderOrderMenuDTO makeStaffViewSpecificOrderOrderMenuDTO(Integer orderMenuPrice, Integer count, StyleStatus styleStatus){
@@ -150,6 +191,18 @@ public class StaffService {
                         .count(count)
                         .styleStatus(styleStatus)
                         .build();
+    }
+
+    public List getAfterConfirmedOrderStatus(){
+
+        List<OrderStatus> orderStatuses = new ArrayList<>();
+
+        orderStatuses.add(OrderStatus.CONFIRMED);
+        orderStatuses.add(OrderStatus.COOKING);
+        orderStatuses.add(OrderStatus.DELIVERING);
+        orderStatuses.add(OrderStatus.DONE);
+
+        return orderStatuses;
     }
 
 }
