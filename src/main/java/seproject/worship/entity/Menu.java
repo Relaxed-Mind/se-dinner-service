@@ -15,10 +15,9 @@ public class Menu {
 
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private StyleStatus styleStatus;
-
     private String menuUrl;
+
+    private Integer menuPrice;
 
     @OneToMany(mappedBy = "menu")
     private List<MenuItem> menuItems = new ArrayList<>();
