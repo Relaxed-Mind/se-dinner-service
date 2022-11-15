@@ -41,6 +41,10 @@ public class Order extends BaseTimeEntity {
         this.orderStatus=orderStatus;
     }
 
+    public void customerCancelOrder(){
+        this.orderStatus = OrderStatus.CANCELED;
+    }
+
     @Builder
     public Order(Customer customer, String destinationAddress, OrderStatus orderStatus,
                  LocalDateTime reservationDate, String cardNum, String phoneNum) {

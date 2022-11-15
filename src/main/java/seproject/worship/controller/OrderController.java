@@ -33,4 +33,9 @@ public class OrderController {
     public Map order(@RequestBody OrderDTO dto){
         return orderService.order(dto);
     }
+
+    @GetMapping("/orders/cancel/{orderId}")
+    public Map customerCancelOrder(@PathVariable Long orderId){
+        return orderService.customerCancelOrder(orderId);
+    }
 }

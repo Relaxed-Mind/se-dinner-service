@@ -1,7 +1,9 @@
 package seproject.worship.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.OrderDTO;
 import seproject.worship.dto.response.ViewSpecificMenuDTO;
 import seproject.worship.dto.response.beforeOrderDTO;
@@ -9,6 +11,7 @@ import seproject.worship.entity.*;
 import seproject.worship.enumpack.OrderStatus;
 import seproject.worship.repository.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -159,5 +162,20 @@ public class OrderService {
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("Results", targetList);
         return responseMap;
+    }
+
+    @Transactional
+    public Map customerCancelOrder(Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "order not exist");
+        Order realOrder = order.get();
+        if(realOrder.getOrderStatus().name().equals("RECEIVING")){
+            realOrder.customerCancelOrder();
+            Map<String, Object> map = new HashMap<>();
+            map.put("orderId", realOrder.getId());
+            return map;
+        } else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "order can't be canceled");
+        }
     }
 }
