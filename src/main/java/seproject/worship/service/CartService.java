@@ -23,6 +23,8 @@ public class CartService {
     private final CustomerRepository customerRepository;
     private final ItemRepository itemRepository;
     private final ModifiedItemRepository modifiedItemRepository;
+    private final OrderMenuRepository orderMenuRepository;
+    private final OrderRepository orderRepository;
 
     public Map cartLoadMenuList(Long customerId) {
         List<CartMenu> cartMenus = cartMenuRepository.findAllByCustomerId(customerId);
@@ -103,5 +105,33 @@ public class CartService {
         Map<String, String> map = new HashMap<>();
         map.put("delete", "ok");
         return map;
+    }
+
+
+    public Map customerReorder(Long customerId, Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "order not exist");
+        if(!order.get().getOrderStatus().equals("DONE")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "order must be done");
+
+        List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(orderId);
+        //예외처리
+        List<Map> targetList = new ArrayList<>();
+        for (OrderMenu orderMenu : orderMenus) {
+            Map<String, Object> map = new HashMap<>();
+            Optional<Customer> customer = customerRepository.findById(customerId); //예외처리
+            CartMenu cartMenu = CartMenu.builder()
+                    .customer(customer.get())
+                    .cartMenuPrice(orderMenu.getOrderMenuPrice())
+                    .count(orderMenu.getCount())
+                    .styleStatus(orderMenu.getStyleStatus())
+                    .menu(orderMenu.getMenu())
+                    .build();
+            cartMenuRepository.save(cartMenu);
+            map.put("cartMenuId", cartMenu.getId());
+            targetList.add(map);
+        }
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Results", targetList);
+        return responseMap;
     }
 }

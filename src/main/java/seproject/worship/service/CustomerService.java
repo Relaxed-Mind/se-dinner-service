@@ -10,17 +10,24 @@ import seproject.worship.dto.request.CustomerModifyInfoDTO;
 import seproject.worship.dto.request.CustomerSaveDTO;
 import seproject.worship.dto.response.CustomerLoadInfoDTO;
 import seproject.worship.entity.Customer;
+import seproject.worship.entity.Menu;
+import seproject.worship.entity.Order;
+import seproject.worship.entity.OrderMenu;
+import seproject.worship.enumpack.OrderStatus;
 import seproject.worship.repository.CustomerRepository;
+import seproject.worship.repository.OrderMenuRepository;
+import seproject.worship.repository.OrderRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final OrderMenuRepository orderMenuRepository;
+    private final OrderRepository orderRepository;
 
     public Customer CustomerSaveDTOtoEntity(CustomerSaveDTO dto){
         return Customer.builder()

@@ -1,8 +1,9 @@
 package seproject.worship.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.OrderDTO;
 import seproject.worship.dto.response.ViewSpecificMenuDTO;
 import seproject.worship.dto.response.beforeOrderDTO;
@@ -10,6 +11,7 @@ import seproject.worship.entity.*;
 import seproject.worship.enumpack.OrderStatus;
 import seproject.worship.repository.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -115,5 +117,65 @@ public class OrderService {
                 .phoneNum(dto.getPhoneNum())
                 .orderStatus(orderStatus)
                 .build();
+    }
+    public Map customerViewSpecificOrder(Long orderId) {
+        List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(orderId);
+        List<Map> targetList = new ArrayList<>();
+        //예외처리
+        for (OrderMenu orderMenu : orderMenus) {
+            Map<String, Object> map = new HashMap<>();
+            Menu menu = orderMenu.getMenu();
+            map.put("menuName", menu.getName());
+            map.put("menuURL", menu.getMenuUrl());
+            map.put("styleStatus", orderMenu.getStyleStatus().name()); //name빼고 해보자
+            map.put("count", orderMenu.getCount());
+            map.put("orderMenuPrice", orderMenu.getOrderMenuPrice());
+            targetList.add(map);
+        }
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Results", targetList);
+        return responseMap;
+    }
+
+    public Map customerLoadOrderList(Long customerId) {
+        List<Order> orders = orderRepository.findAllByCustomerId(customerId);
+        //예외처리 (빈 경우)
+
+        List<Map> targetList = new ArrayList<>();
+
+        for (Order order : orders) {
+            Map<String, Object> map = new HashMap<>();
+
+            LocalDateTime createdTime = order.getCreatedTime();
+            String createdTimeToString = createdTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+            String orderStatusToString = order.getOrderStatus().name();
+
+            List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(order.getId());
+            //예외처리
+            Menu menu = orderMenus.get(0).getMenu();
+            map.put("menuName", menu.getName());
+            map.put("menuUrl", menu.getMenuUrl());
+            map.put("orderCreatedTime", createdTimeToString);
+            map.put("orderStatus", orderStatusToString);
+            targetList.add(map);
+        }
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Results", targetList);
+        return responseMap;
+    }
+
+    @Transactional
+    public Map customerCancelOrder(Long orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "order not exist");
+        Order realOrder = order.get();
+        if(realOrder.getOrderStatus().name().equals("RECEIVING")){
+            realOrder.customerCancelOrder();
+            Map<String, Object> map = new HashMap<>();
+            map.put("orderId", realOrder.getId());
+            return map;
+        } else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "order can't be canceled");
+        }
     }
 }
