@@ -34,5 +34,10 @@ public class CustomerController {
         return customerService.customerModifyInfo(dto);
     }
 
+    @GetMapping("/{customerId}/orders")
+    public Map customerLoadOrderList(@PathVariable Long customerId){
+        return customerService.customerLoadOrderList(customerId);
+    }
+
 
 }
