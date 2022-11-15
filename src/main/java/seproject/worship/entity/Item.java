@@ -31,6 +31,10 @@ public class Item {
         this.stockQuantity+=addQuantity;
     }
 
+    public void useQuantity(Integer useQuantity){
+        this.stockQuantity-=useQuantity;
+    }
+
     @Builder
     public Item(Long id, String itemUrl, String name, Integer price, Integer stockQuantity) {
         this.id = id;
