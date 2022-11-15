@@ -39,5 +39,10 @@ public class CustomerController {
         return customerService.customerLoadOrderList(customerId);
     }
 
+    @GetMapping("/{customerId}/orders/{orderId}")
+    public Map customerViewSpecificOrder(@PathVariable Long customerId,
+                                         @PathVariable Long orderId) {
+        return customerService.customerViewSpecificOrder(customerId, orderId);
+    }
 
 }

@@ -117,4 +117,23 @@ public class CustomerService {
         responseMap.put("Results", targetList);
         return responseMap;
     }
+
+    public Map customerViewSpecificOrder(Long customerId, Long orderId) {
+        List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(orderId);
+        List<Map> targetList = new ArrayList<>();
+        //예외처리
+        for (OrderMenu orderMenu : orderMenus) {
+            Map<String, Object> map = new HashMap<>();
+            Menu menu = orderMenu.getMenu();
+            map.put("menuName", menu.getName());
+            map.put("menuURL", menu.getMenuUrl());
+            map.put("styleStatus", orderMenu.getStyleStatus().name()); //name빼고 해보자
+            map.put("count", orderMenu.getCount());
+            map.put("orderMenuPrice", orderMenu.getOrderMenuPrice());
+            targetList.add(map);
+        }
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("Results", targetList);
+        return responseMap;
+    }
 }
