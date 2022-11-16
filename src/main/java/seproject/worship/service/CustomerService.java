@@ -37,8 +37,10 @@ public class CustomerService {
         //id가 이미 존재
         if(idCheck.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cid already exist");
+
         //유저가 이미 가입됨
-        if(idCheck.get().getPhoneNum().equals(customer.getPhoneNum()))
+        Optional<Customer> phoneNumCheck = customerRepository.findByPhoneNum(customer.getPhoneNum());
+        if(phoneNumCheck.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "customer already saved");
 
         customerRepository.save(customer);

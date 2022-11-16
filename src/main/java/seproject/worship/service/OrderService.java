@@ -51,14 +51,22 @@ public class OrderService {
 
     public beforeOrderDTO beforeOrder(Long customerId) {
         Optional<Customer> customer = customerRepository.findById(customerId);
-        //예외처리
+        if(customer.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         List<CartMenu> cartMenus = cartMenuRepository.findAllByCustomerId(customerId);
 
-        return new beforeOrderDTO(customer.get(), calcTotalPrice(cartMenus));
+        Integer totalPrice = calcTotalPrice(cartMenus);
+        Integer discountPrice = 0;
+
+        if(orderRepository.countByCustomerIdAndOrderStatus(customerId, OrderStatus.DONE)>2){
+            discountPrice = totalPrice / 10;
+        }
+
+        return new beforeOrderDTO(customer.get(), totalPrice, discountPrice);
     }
 
     private Integer calcTotalPrice(List<CartMenu> cartMenus) {
         Integer totalPrice = 0;
+
         for (CartMenu cartMenu : cartMenus) {
             totalPrice += cartMenu.getCartMenuPrice();
         }
