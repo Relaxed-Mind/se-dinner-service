@@ -3,7 +3,6 @@ package seproject.worship.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.CartAddMenuDTO;
 import seproject.worship.dto.response.CartLoadMenuListDTO;
@@ -11,8 +10,6 @@ import seproject.worship.dto.response.CartViewSpecificMenuDTO;
 import seproject.worship.entity.*;
 import seproject.worship.enumpack.StyleStatus;
 import seproject.worship.repository.*;
-
-import javax.swing.text.Style;
 import java.util.*;
 
 @Service
@@ -29,7 +26,8 @@ public class CartService {
     public Map cartLoadMenuList(Long customerId) {
         List<CartMenu> cartMenus = cartMenuRepository.findAllByCustomerId(customerId);
         List<Map> targetList = new ArrayList<>();
-
+        if(cartMenus.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "cart is empty");
         for (CartMenu cartMenu : cartMenus) {
             Optional<Menu> menu = menuRepository.findById(cartMenu.getMenu().getId());
             //예외처리

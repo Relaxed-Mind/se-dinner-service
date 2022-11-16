@@ -10,24 +10,14 @@ import seproject.worship.dto.request.CustomerModifyInfoDTO;
 import seproject.worship.dto.request.CustomerSaveDTO;
 import seproject.worship.dto.response.CustomerLoadInfoDTO;
 import seproject.worship.entity.Customer;
-import seproject.worship.entity.Menu;
-import seproject.worship.entity.Order;
-import seproject.worship.entity.OrderMenu;
-import seproject.worship.enumpack.OrderStatus;
 import seproject.worship.repository.CustomerRepository;
-import seproject.worship.repository.OrderMenuRepository;
-import seproject.worship.repository.OrderRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
-    private final OrderMenuRepository orderMenuRepository;
-    private final OrderRepository orderRepository;
 
     public Customer CustomerSaveDTOtoEntity(CustomerSaveDTO dto){
         return Customer.builder()
@@ -42,7 +32,14 @@ public class CustomerService {
 
     public Map customerSave(CustomerSaveDTO dto) {
         Customer customer = CustomerSaveDTOtoEntity(dto);
-        //예외처리 추가해야함 (중복)
+        Optional<Customer> idCheck = customerRepository.findByCid(customer.getCid());
+
+        //id가 이미 존재
+        if(idCheck.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cid already exist");
+        //유저가 이미 가입됨
+        if(idCheck.get().getPhoneNum().equals(customer.getPhoneNum()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "customer already saved");
 
         customerRepository.save(customer);
 

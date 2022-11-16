@@ -67,7 +67,7 @@ public class OrderService {
 
     public Map order(OrderDTO dto){
         Optional<Customer> customer = customerRepository.findById(dto.getCustomerId());
-        //예외처리
+        if(customer.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
 
         Order order = makeOrder(dto, customer.get());
         orderRepository.save(order);
@@ -139,7 +139,7 @@ public class OrderService {
 
     public Map customerLoadOrderList(Long customerId) {
         List<Order> orders = orderRepository.findAllByCustomerId(customerId);
-        //예외처리 (빈 경우)
+        if(orders.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "order is empty");
 
         List<Map> targetList = new ArrayList<>();
 
