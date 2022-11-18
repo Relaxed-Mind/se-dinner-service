@@ -48,8 +48,8 @@ public class CartService {
         if(menu.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "menu not exist");
 
-        Optional<CartMenu> optionalCartMenu = cartMenuRepository.findByCustomerIdAndMenuId(dto.getCustomerId(), dto.getMenuId());
-        if(optionalCartMenu.isPresent())
+        List<CartMenu> cartMenus = cartMenuRepository.findAllByCustomerIdAndMenuId(dto.getCustomerId(), dto.getMenuId());
+        if(!cartMenus.isEmpty())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "this menu already exist in cart");
 
         List<Map> foods = dto.getFoods();

@@ -21,7 +21,7 @@ public class CartController {
         return cartService.cartAddMenu(dto);
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/customer/{customerId}")
     public Map cartLoadMenuList(@PathVariable Long customerId){
         return cartService.cartLoadMenuList(customerId);
     }
