@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.CartAddMenuDTO;
+import seproject.worship.dto.request.CartModifyMenuDTO;
 import seproject.worship.dto.response.CartLoadMenuListDTO;
 import seproject.worship.dto.response.CartViewSpecificMenuDTO;
 import seproject.worship.entity.*;
@@ -40,10 +41,17 @@ public class CartService {
     }
 
     public Map cartAddMenu(CartAddMenuDTO dto) {
-        //똑같은걸 담는 예외처리 (처리를 어디서.. 프론트? 백?)
         Optional<Customer> customer = customerRepository.findById(dto.getCustomerId());
+        if(customer.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "customer not exist");
         Optional<Menu> menu = menuRepository.findById(dto.getMenuId());
-        //둘다 예외처리
+        if(menu.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "menu not exist");
+
+        Optional<CartMenu> optionalCartMenu = cartMenuRepository.findByCustomerIdAndMenuId(dto.getCustomerId(), dto.getMenuId());
+        if(optionalCartMenu.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "this menu already exist in cart");
+
         List<Map> foods = dto.getFoods();
         Integer totalMenuPrice = getTotalMenuPrice(menu.get().getMenuPrice(), dto.getCount(), foods);
 
@@ -61,7 +69,8 @@ public class CartService {
         for (Map food : foods) {
             String itemName = (String) food.get("name");
             Optional<Item> item = itemRepository.findByName(itemName);
-            //예외처리
+            if(item.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "item not found");
+
             ModifiedItem modifiedItem = ModifiedItem.builder()
                     .item(item.get())
                     .count((Integer)food.get("itemCount"))
@@ -98,7 +107,8 @@ public class CartService {
 
     public Map cartDeleteMenu(Long cartMenuId) {
         Optional<CartMenu> cartMenu = cartMenuRepository.findById(cartMenuId);
-        //예외처리
+        if(cartMenu.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "cartMenu not exist");
+
         cartMenuRepository.delete(cartMenu.get());
         Map<String, String> map = new HashMap<>();
         map.put("delete", "ok");
@@ -109,7 +119,7 @@ public class CartService {
     public Map customerReorder(Long customerId, Long orderId) {
         Optional<Order> order = orderRepository.findById(orderId);
         if(order.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "order not exist");
-        if(!order.get().getOrderStatus().equals("DONE")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "order must be done");
+        if(!(order.get().getOrderStatus().name().equals("DONE"))) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "order must be done");
 
         List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(orderId);
         //예외처리
@@ -131,5 +141,44 @@ public class CartService {
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("Results", targetList);
         return responseMap;
+    }
+
+    public Map cartModifyMenu(CartModifyMenuDTO dto) {
+
+        cartDeleteMenu(dto.getCartMenuId());
+
+        Long cartMenuId = cartAddMenu(dto);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("cartMenuId", cartMenuId);
+        return map;
+    }
+
+    public Long cartAddMenu(CartModifyMenuDTO dto) {
+        Optional<Customer> customer = customerRepository.findById(dto.getCustomerId());
+        if(customer.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "customer not exist");
+        Optional<Menu> menu = menuRepository.findById(dto.getMenuId());
+        if(menu.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "menu not exist");
+
+        List<Map> foods = dto.getFoods();
+        Integer totalMenuPrice = getTotalMenuPrice(menu.get().getMenuPrice(), dto.getCount(), foods);
+
+        CartMenu cartMenu = makeCartMenu(dto, customer, menu, totalMenuPrice);
+        cartMenuRepository.save(cartMenu);
+
+        makeModifiedItem(cartMenu, foods);
+
+        return cartMenu.getId();
+    }
+    private CartMenu makeCartMenu(CartModifyMenuDTO dto, Optional<Customer> customer, Optional<Menu> menu, Integer totalMenuPrice) {
+        return CartMenu.builder()
+                .menu(menu.get())
+                .customer(customer.get())
+                .cartMenuPrice(totalMenuPrice)
+                .count(dto.getCount())
+                .styleStatus(StyleStatus.valueOf(dto.getStyle()))
+                .build();
     }
 }

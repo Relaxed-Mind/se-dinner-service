@@ -42,4 +42,12 @@ public class CartMenu {
         this.count = count;
         this.styleStatus = styleStatus;
     }
+
+    public void modifyCartMenu(Integer count, StyleStatus styleStatus){
+        this.count = count;
+        this.styleStatus = styleStatus;
+    }
+    public void modifyCartMenuPrice(Integer price){
+        this.cartMenuPrice = price;
+    }
 }

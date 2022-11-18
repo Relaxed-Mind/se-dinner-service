@@ -3,6 +3,7 @@ package seproject.worship.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import seproject.worship.dto.request.CartAddMenuDTO;
+import seproject.worship.dto.request.CartModifyMenuDTO;
 import seproject.worship.dto.response.CartViewSpecificMenuDTO;
 import seproject.worship.service.CartService;
 
@@ -33,6 +34,11 @@ public class CartController {
     @DeleteMapping("/{cartMenuId}")
     public Map cartDeleteMenu(@PathVariable Long cartMenuId){
         return cartService.cartDeleteMenu(cartMenuId);
+    }
+
+    @PutMapping()
+    public Map cartModifyMenu(@RequestBody CartModifyMenuDTO dto){
+        return cartService.cartModifyMenu(dto);
     }
 
 }
