@@ -39,7 +39,7 @@ public class StaffService {
         Optional<Staff> staff = staffRepository.findBySidAndPw(dtoSid, dtoPw);
 
         if(staff.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"login error");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"일치하는 직원 정보가 없음");
         }
         else{
             Map<String, Object> map = new HashMap<>();
@@ -52,8 +52,10 @@ public class StaffService {
     public Map staffChangeOrderStatus(StaffChangeOrderStatusDTO staffChangeOrderStatusDTO){
         Long id = staffChangeOrderStatusDTO.getOrderId();
         OrderStatus orderStatus = staffChangeOrderStatusDTO.getOrderStatus();
-
         Optional<Order> orderFindById = orderRepository.findById(id);
+        if(orderFindById.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 Order ID를 가진 Order가 DB에 존재하지 않음");
+        }
         orderFindById.get().staffChangeOrderStatus(orderStatus);
 
         Map<String, Object> map = new HashMap<>();
@@ -66,6 +68,10 @@ public class StaffService {
 
         List<StaffLoadOrderListDTO> staffLoadOrderListDTOS = new ArrayList<>();
         List<Order> receivingOrders = orderRepository.findByOrderStatus(OrderStatus.RECEIVING);
+
+        if(receivingOrders.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"접수대기 중인 Order가 존재하지 않음");
+        }
         for( Order order : receivingOrders){
             StaffLoadOrderListDTO staffLoadOrderListDTO = new StaffLoadOrderListDTO();
             List<Map> staffLoadOrderListDTOOrderMenus = staffLoadOrderListDTO.getOrderMenus();
@@ -90,8 +96,12 @@ public class StaffService {
     @Transactional
     public Map staffRefuseOrder(StaffRefuseOrderDTO staffRefuseOrderDTO){
         Optional<Order> orderFindById = orderRepository.findById(staffRefuseOrderDTO.getOrderId());
-        orderFindById.get().staffChangeOrderStatus(OrderStatus.REFUSED);
 
+        if(orderFindById.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 Order ID를 가진 Order가 DB에 존재하지 않음");
+        }
+
+        orderFindById.get().staffChangeOrderStatus(OrderStatus.REFUSED);
         Map<String,Object> map = new HashMap<>();
         map.put("orderId",orderFindById.get().getId());
         return map;
@@ -101,6 +111,11 @@ public class StaffService {
     @Transactional
     public Map staffAcceptOrder(StaffAcceptOrderDTO staffAcceptOrderDTO){
         Optional<Order> orderFindById = orderRepository.findById(staffAcceptOrderDTO.getOrderId());
+
+        if(orderFindById.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 Order ID를 가진 Order가 DB에 존재하지 않음");
+        }
+
         orderFindById.get().staffChangeOrderStatus(OrderStatus.CONFIRMED);
         List<OrderMenu> OrderMenusOfOrderFindById = orderFindById.get().getOrderMenus();
 
@@ -113,9 +128,11 @@ public class StaffService {
             itemRepository.flush();
 
             List<ModifiedItem> modifiedItems = orderMenu.getModifiedItems();
+            if(!modifiedItems.isEmpty()){
             for(ModifiedItem modifiedItem : modifiedItems){
                 Optional<Item> itemFindByName = itemRepository.findByName(modifiedItem.getItem().getName());
                 itemFindByName.get().useQuantity(modifiedItem.getCount());
+                }
             }
         }
 
@@ -129,8 +146,16 @@ public class StaffService {
 
         StaffViewSpecificOrderDTO staffViewSpecificOrderDTO = new StaffViewSpecificOrderDTO();
         staffViewSpecificOrderDTO.setOrderId(orderId);
+
         Optional<Order> orderFindById = orderRepository.findById(orderId);
+        if(orderFindById.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 Order ID를 가진 Order가 DB에 존재하지 않음");
+        }
+
         List<OrderMenu> orderMenusFindById = orderFindById.get().getOrderMenus();
+        if(orderMenusFindById.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"해당 Order의 Menu가 존재하지 않음.. 불가능..");
+        }
 
         for(OrderMenu orderMenu : orderMenusFindById){
             StaffViewSpecificOrderOrderMenuDTO staffViewSpecificOrderOrderMenuDTO =
@@ -143,15 +168,17 @@ public class StaffService {
                 staffViewSpecificOrderOrderMenuDTO.getMenuItems().add(map);
             }
             List<ModifiedItem> modifiedItems = orderMenu.getModifiedItems();
+            if(!modifiedItems.isEmpty()){
             for(ModifiedItem modifiedItem : modifiedItems){
                 Map<String, Object> map = new HashMap<>();
                 map.put("modifiedItemCount",modifiedItem.getCount());
                 map.put("modifiedItemName",modifiedItem.getItem().getName());
                 staffViewSpecificOrderOrderMenuDTO.getModifiedItems().add(map);
+                }
             }
             staffViewSpecificOrderDTO.getOrderMenus().add(staffViewSpecificOrderOrderMenuDTO);
         }
-        System.out.println("staffViewSpecificOrderDTO"+staffViewSpecificOrderDTO.getOrderMenus().size());
+
         return staffViewSpecificOrderDTO;
     }
 
@@ -161,8 +188,10 @@ public class StaffService {
         List afterConfirmedOrderStatus = getAfterConfirmedOrderStatus();
         List<Order> ordersFindByStatues =
                 orderRepository.findAllByOrderStatusIn(afterConfirmedOrderStatus);
+        if(ordersFindByStatues.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"주문 수락된 이후의 상태를 가지는 주문이 존재하지 않음");
 
-        for( Order order : ordersFindByStatues){
+        for(Order order : ordersFindByStatues){
 
             StaffLoadAcceptOrderListDTO staffLoadAcceptOrderListDTO = new StaffLoadAcceptOrderListDTO();
             List<Map> staffLoadAcceptOrderListDTOOrderMenus = staffLoadAcceptOrderListDTO.getOrderMenus();
