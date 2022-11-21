@@ -9,8 +9,12 @@ import seproject.worship.dto.request.CustomerLoginDTO;
 import seproject.worship.dto.request.CustomerModifyInfoDTO;
 import seproject.worship.dto.request.CustomerSaveDTO;
 import seproject.worship.dto.response.CustomerLoadInfoDTO;
+import seproject.worship.entity.CartMenu;
 import seproject.worship.entity.Customer;
+import seproject.worship.entity.Order;
+import seproject.worship.repository.CartMenuRepository;
 import seproject.worship.repository.CustomerRepository;
+import seproject.worship.repository.OrderRepository;
 
 import java.util.*;
 
@@ -18,6 +22,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final CartMenuRepository cartMenuRepository;
+    private final OrderRepository orderRepository;
 
     public Customer CustomerSaveDTOtoEntity(CustomerSaveDTO dto){
         return Customer.builder()
@@ -57,9 +63,22 @@ public class CustomerService {
         if(customer.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "login error");
         } else{
+            List<CartMenu> cartMenus = cartMenuRepository.findAllByCustomerId(customer.get().getId());
+            List<Long> cart = new ArrayList<>();
+            for (CartMenu cartMenu : cartMenus) {
+                cart.add(cartMenu.getId());
+            }
+            List<Order> orders = orderRepository.findAllByCustomerId(customer.get().getId());
+            List<Long> order = new ArrayList<>();
+            for (Order order1 : orders) {
+                order.add(order1.getId());
+            }
+
             Map<String, Object> map = new HashMap<>();
             map.put("customerId", customer.get().getId());
             map.put("cid", customer.get().getCid());
+            map.put("cart", cart);
+            map.put("order", order);
             return map;
         }
     }
