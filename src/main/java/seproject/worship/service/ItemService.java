@@ -2,6 +2,7 @@ package seproject.worship.service;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,19 +26,24 @@ public class ItemService {
     @Transactional
     public List itemAdd(List<ItemAddDTO> list){
 
-        //추가한게 없는 예외사항 추가해야 함
+
         List<ItemAddResponseDTO> modifiedItem = new ArrayList<>();
 
         for(ItemAddDTO itemAddDTO : list) {
 
             Long id = itemAddDTO.getId();
             Integer addQuantity = itemAddDTO.getAddQuantity();
-            Item itemFindById = itemRepository.findById(id).get();
-            itemFindById.addQuantity(addQuantity);
+            Optional<Item> itemFindById = itemRepository.findById(id);
+            if(itemFindById.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 ID값을 가지는 item 존재하지 않음");}
+            else{
+                 itemFindById.get().addQuantity(addQuantity);
+            }
+            itemRepository.flush();
 
             ItemAddResponseDTO itemAddResponseDTO = new ItemAddResponseDTO();
             itemAddResponseDTO.setId(id);
-            itemAddResponseDTO.setStockQuantity(itemFindById.getStockQuantity());
+            itemAddResponseDTO.setStockQuantity(itemRepository.findById(id).get().getStockQuantity());
             modifiedItem.add(itemAddResponseDTO);
         }
         return modifiedItem;
@@ -47,6 +53,8 @@ public class ItemService {
     public List itemListLoad(){
         List<ItemListLoadDTO> findAllItem = new ArrayList<>();
         List<Item> allItem = itemRepository.findAll();
+        if(allItem.isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"item이 DB에 저장되어 있지 않다.");
 
         for(Item item : allItem){
             ItemListLoadDTO entityToDtoItem = ItemListLoadDTO.builder()
