@@ -123,9 +123,10 @@ public class CartService {
 
         List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrderId(orderId);
         //예외처리
-        List<Map> targetList = new ArrayList<>();
+        List<Long> targetList1 = new ArrayList<>();
+        List<Map> targetList2 = new ArrayList<>();
+
         for (OrderMenu orderMenu : orderMenus) {
-            Map<String, Object> map = new HashMap<>();
             Optional<Customer> customer = customerRepository.findById(customerId); //예외처리
             CartMenu cartMenu = CartMenu.builder()
                     .customer(customer.get())
@@ -135,11 +136,33 @@ public class CartService {
                     .menu(orderMenu.getMenu())
                     .build();
             cartMenuRepository.save(cartMenu);
-            map.put("cartMenuId", cartMenu.getId());
-            targetList.add(map);
+            targetList1.add(cartMenu.getId());
+
+            List<ModifiedItem> modifiedItems = modifiedItemRepository.findAllByOrderMenuId(orderMenu.getId());
+            for (ModifiedItem modifiedItem : modifiedItems) {
+                ModifiedItem tempItem = ModifiedItem.builder()
+                        .item(modifiedItem.getItem())
+                        .count(modifiedItem.getCount())
+                        .build();
+                tempItem.setCartMenu(cartMenu);
+            }
+
+            Map<String, Object> map = new HashMap<>();
+            Menu menu = orderMenu.getMenu();
+            map.put("menuName", menu.getName());
+            map.put("menuURL", menu.getMenuUrl());
+            map.put("styleStatus", orderMenu.getStyleStatus().name());
+            map.put("count", orderMenu.getCount());
+            map.put("orderMenuPrice", orderMenu.getOrderMenuPrice());
+            targetList2.add(map);
         }
+        Map<String, Object> beforeMap = new HashMap<>();
+        beforeMap.put("cartMenus", targetList1);
+        beforeMap.put("orderMenus", targetList2);
+        List<Map> targetList3 = new ArrayList<>();
+        targetList3.add(beforeMap);
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("Results", targetList);
+        responseMap.put("Results", targetList3);
         return responseMap;
     }
 

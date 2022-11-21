@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface ModifiedItemRepository extends JpaRepository<ModifiedItem, Long> {
     List<ModifiedItem> findAllByCartMenuId(Long cartMenuId);
+    List<ModifiedItem> findAllByOrderMenuId(Long orderMenuId);
 }
