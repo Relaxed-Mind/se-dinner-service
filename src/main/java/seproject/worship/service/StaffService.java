@@ -76,10 +76,9 @@ public class StaffService {
             StaffLoadOrderListDTO staffLoadOrderListDTO = new StaffLoadOrderListDTO();
             List<Map> staffLoadOrderListDTOOrderMenus = staffLoadOrderListDTO.getOrderMenus();
             List<OrderMenu> orderMenus = order.getOrderMenus();
-            Map<String, Object> map = new HashMap<>();
 
             for(OrderMenu orderMenu : orderMenus){
-
+                Map<String, Object> map = new HashMap<>();
                 map.put("menuName",orderMenu.getMenu().getName());
                 map.put("count",orderMenu.getCount());
                 staffLoadOrderListDTOOrderMenus.add(map);
