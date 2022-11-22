@@ -22,7 +22,7 @@ public class ItemController {
     @PostMapping("/item")
     public List itemAdd(@RequestBody ItemAddListDTO itemAddListDTO){
 
-        System.out.println(itemAddListDTO.getResults().size());
+
         return itemService.itemAdd(itemAddListDTO.getResults());
     }
 
