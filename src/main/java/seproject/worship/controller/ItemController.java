@@ -20,14 +20,14 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping("/item")
-    public List itemAdd(@RequestBody ItemAddListDTO itemAddListDTO){
+    public Map itemAdd(@RequestBody ItemAddListDTO itemAddListDTO){
 
 
         return itemService.itemAdd(itemAddListDTO.getResults());
     }
 
     @GetMapping("/item")
-    public List itemListLoad(){
+    public Map itemListLoad(){
         return itemService.itemListLoad();
     }
 
