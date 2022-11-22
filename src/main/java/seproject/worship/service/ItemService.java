@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.ItemAddDTO;
+import seproject.worship.dto.request.ItemAddListDTO;
 import seproject.worship.dto.response.ItemAddResponseDTO;
 import seproject.worship.dto.response.ItemListLoadDTO;
 import seproject.worship.entity.Item;
@@ -24,12 +25,12 @@ public class ItemService {
     private  final ItemRepository itemRepository;
 
     @Transactional
-    public List itemAdd(List<ItemAddDTO> list){
+    public List itemAdd(List<ItemAddDTO> itemAddDTOS){
 
 
         List<ItemAddResponseDTO> modifiedItem = new ArrayList<>();
 
-        for(ItemAddDTO itemAddDTO : list) {
+        for(ItemAddDTO itemAddDTO : itemAddDTOS) {
 
             Long id = itemAddDTO.getId();
             Integer addQuantity = itemAddDTO.getAddQuantity();
