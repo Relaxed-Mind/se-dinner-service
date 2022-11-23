@@ -45,7 +45,7 @@ public class ItemService {
             modifiedItem.add(itemAddResponseDTO);
         }
         Map<String, List> map=new HashMap<>();
-        map.put("results",modifiedItem);
+        map.put("Results",modifiedItem);
         return map;
     }
 
@@ -65,7 +65,7 @@ public class ItemService {
             findAllItem.add(entityToDtoItem);
         }
         Map<String,List> map = new HashMap<>();
-        map.put("results",findAllItem);
+        map.put("Results",findAllItem);
         return map;
     }
 

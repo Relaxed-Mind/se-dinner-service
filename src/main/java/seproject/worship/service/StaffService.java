@@ -158,14 +158,15 @@ public class StaffService {
 
         for(OrderMenu orderMenu : orderMenusFindById){
             StaffViewSpecificOrderOrderMenuDTO staffViewSpecificOrderOrderMenuDTO =
-                    makeStaffViewSpecificOrderOrderMenuDTO(orderMenu.getOrderMenuPrice(), orderMenu.getCount(), orderMenu.getStyleStatus());
+                    makeStaffViewSpecificOrderOrderMenuDTO(orderMenu.getOrderMenuPrice(), orderMenu.getCount(), orderMenu.getStyleStatus(),orderMenu.getMenu().getName());
 
-            List<MenuItem> menuItems = orderMenu.getMenu().getMenuItems();
+           /* List<MenuItem> menuItems = orderMenu.getMenu().getMenuItems();
             for( MenuItem menuItem : menuItems){
                 Map<String, Object> map = new HashMap<>();
                 map.put("itemName",menuItem.getItem().getName());
                 staffViewSpecificOrderOrderMenuDTO.getMenuItems().add(map);
-            }
+            }*/
+
             List<ModifiedItem> modifiedItems = orderMenu.getModifiedItems();
             if(!modifiedItems.isEmpty()){
             for(ModifiedItem modifiedItem : modifiedItems){
@@ -213,11 +214,12 @@ public class StaffService {
 
     }
 
-    public StaffViewSpecificOrderOrderMenuDTO makeStaffViewSpecificOrderOrderMenuDTO(Integer orderMenuPrice, Integer count, StyleStatus styleStatus){
+    public StaffViewSpecificOrderOrderMenuDTO makeStaffViewSpecificOrderOrderMenuDTO(Integer orderMenuPrice, Integer count, StyleStatus styleStatus,String menuName){
         return StaffViewSpecificOrderOrderMenuDTO.builder()
                         .orderMenuPrice(orderMenuPrice)
                         .count(count)
                         .styleStatus(styleStatus)
+                        .menuName(menuName)
                         .build();
     }
 
