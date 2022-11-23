@@ -14,15 +14,15 @@ import java.util.Map;
 @Getter @Setter
 public class StaffViewSpecificOrderOrderMenuDTO {
 
-    List<Map> menuItems = new ArrayList<>();
+    String menuName;
     Integer orderMenuPrice;
     StyleStatus styleStatus;
     Integer count;
     List<Map> modifiedItems = new ArrayList<>();
 
     @Builder
-    public StaffViewSpecificOrderOrderMenuDTO(Integer orderMenuPrice, StyleStatus styleStatus, Integer count) {
-
+    public StaffViewSpecificOrderOrderMenuDTO(Integer orderMenuPrice, StyleStatus styleStatus, Integer count,String menuName) {
+        this.menuName = menuName;
         this.orderMenuPrice = orderMenuPrice;
         this.styleStatus = styleStatus;
         this.count = count;
