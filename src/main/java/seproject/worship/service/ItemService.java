@@ -22,14 +22,14 @@ public class ItemService {
     private  final ItemRepository itemRepository;
 
     @Transactional
-    public Map itemAdd(List<ItemAddDTO> itemAddDTOS){
+    public Map itemAdd(ItemAddListDTO itemAddDTOS){
 
-
+        List<ItemAddDTO> results = itemAddDTOS.getResults();
         List<ItemAddResponseDTO> modifiedItem = new ArrayList<>();
 
-        for(ItemAddDTO itemAddDTO : itemAddDTOS) {
+        for(ItemAddDTO itemAddDTO: results) {
 
-            Long id = itemAddDTO.getId();
+            Long id =itemAddDTO.getId();
             Integer addQuantity = itemAddDTO.getAddQuantity();
             Optional<Item> itemFindById = itemRepository.findById(id);
             if(itemFindById.isEmpty()){
