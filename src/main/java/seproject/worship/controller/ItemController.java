@@ -23,7 +23,7 @@ public class ItemController {
     public Map itemAdd(@RequestBody ItemAddListDTO itemAddListDTO){
 
 
-        return itemService.itemAdd(itemAddListDTO.getResults());
+        return itemService.itemAdd(itemAddListDTO);
     }
 
     @GetMapping("/item")
