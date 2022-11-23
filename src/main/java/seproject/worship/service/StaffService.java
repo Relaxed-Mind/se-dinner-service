@@ -228,7 +228,6 @@ public class StaffService {
         orderStatuses.add(OrderStatus.CONFIRMED);
         orderStatuses.add(OrderStatus.COOKING);
         orderStatuses.add(OrderStatus.DELIVERING);
-        orderStatuses.add(OrderStatus.DONE);
 
         return orderStatuses;
     }

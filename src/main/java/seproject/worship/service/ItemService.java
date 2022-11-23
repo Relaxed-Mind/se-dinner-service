@@ -7,15 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import seproject.worship.dto.request.ItemAddDTO;
+import seproject.worship.dto.request.ItemAddListDTO;
 import seproject.worship.dto.response.ItemAddResponseDTO;
 import seproject.worship.dto.response.ItemListLoadDTO;
 import seproject.worship.entity.Item;
 import seproject.worship.repository.ItemRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +22,12 @@ public class ItemService {
     private  final ItemRepository itemRepository;
 
     @Transactional
-    public List itemAdd(List<ItemAddDTO> list){
+    public Map itemAdd(List<ItemAddDTO> itemAddDTOS){
 
 
         List<ItemAddResponseDTO> modifiedItem = new ArrayList<>();
 
-        for(ItemAddDTO itemAddDTO : list) {
+        for(ItemAddDTO itemAddDTO : itemAddDTOS) {
 
             Long id = itemAddDTO.getId();
             Integer addQuantity = itemAddDTO.getAddQuantity();
@@ -46,11 +44,13 @@ public class ItemService {
             itemAddResponseDTO.setStockQuantity(itemRepository.findById(id).get().getStockQuantity());
             modifiedItem.add(itemAddResponseDTO);
         }
-        return modifiedItem;
+        Map<String, List> map=new HashMap<>();
+        map.put("results",modifiedItem);
+        return map;
     }
 
     @Transactional(readOnly = true)
-    public List itemListLoad(){
+    public Map itemListLoad(){
         List<ItemListLoadDTO> findAllItem = new ArrayList<>();
         List<Item> allItem = itemRepository.findAll();
         if(allItem.isEmpty())
@@ -64,7 +64,9 @@ public class ItemService {
                     .stockQuantity(item.getStockQuantity()).build();
             findAllItem.add(entityToDtoItem);
         }
-        return findAllItem;
+        Map<String,List> map = new HashMap<>();
+        map.put("results",findAllItem);
+        return map;
     }
 
 
