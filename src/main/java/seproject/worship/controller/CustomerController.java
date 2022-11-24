@@ -48,7 +48,7 @@ public class CustomerController {
         return orderService.customerViewSpecificOrder(orderId);
     }
 
-    @GetMapping("/customer/{customerId}/reorder/{orderId}")
+    @PostMapping("/customer/{customerId}/reorder/{orderId}")
     public Map customerReorder(@PathVariable Long customerId
                                ,@PathVariable Long orderId){
         return cartService.customerReorder(customerId, orderId);
