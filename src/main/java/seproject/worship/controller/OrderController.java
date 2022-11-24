@@ -2,9 +2,9 @@ package seproject.worship.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import seproject.worship.dto.request.OrderDTO;
-import seproject.worship.dto.response.ViewSpecificMenuDTO;
-import seproject.worship.dto.response.beforeOrderDTO;
+import seproject.worship.domain.dto.request.OrderDTO;
+import seproject.worship.domain.dto.response.ViewSpecificMenuDTO;
+import seproject.worship.domain.dto.response.beforeOrderDTO;
 import seproject.worship.service.OrderService;
 
 import java.util.Map;

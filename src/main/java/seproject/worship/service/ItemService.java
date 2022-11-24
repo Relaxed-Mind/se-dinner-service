@@ -1,16 +1,15 @@
 package seproject.worship.service;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import seproject.worship.dto.request.ItemAddDTO;
-import seproject.worship.dto.request.ItemAddListDTO;
-import seproject.worship.dto.response.ItemAddResponseDTO;
-import seproject.worship.dto.response.ItemListLoadDTO;
-import seproject.worship.entity.Item;
+import seproject.worship.domain.dto.request.ItemAddDTO;
+import seproject.worship.domain.dto.request.ItemAddListDTO;
+import seproject.worship.domain.dto.response.ItemAddResponseDTO;
+import seproject.worship.domain.dto.response.ItemListLoadDTO;
+import seproject.worship.domain.entity.Item;
 import seproject.worship.repository.ItemRepository;
 
 import java.util.*;

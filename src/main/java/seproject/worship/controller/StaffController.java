@@ -2,11 +2,11 @@ package seproject.worship.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import seproject.worship.dto.request.StaffAcceptOrderDTO;
-import seproject.worship.dto.request.StaffChangeOrderStatusDTO;
-import seproject.worship.dto.request.StaffLoginDTO;
-import seproject.worship.dto.request.StaffRefuseOrderDTO;
-import seproject.worship.dto.response.StaffViewSpecificOrderDTO;
+import seproject.worship.domain.dto.request.StaffAcceptOrderDTO;
+import seproject.worship.domain.dto.request.StaffChangeOrderStatusDTO;
+import seproject.worship.domain.dto.request.StaffLoginDTO;
+import seproject.worship.domain.dto.request.StaffRefuseOrderDTO;
+import seproject.worship.domain.dto.response.StaffViewSpecificOrderDTO;
 import seproject.worship.service.StaffService;
 
 import java.util.Map;

@@ -2,9 +2,9 @@ package seproject.worship.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import seproject.worship.dto.request.CartAddMenuDTO;
-import seproject.worship.dto.request.CartModifyMenuDTO;
-import seproject.worship.dto.response.CartViewSpecificMenuDTO;
+import seproject.worship.domain.dto.request.CartAddMenuDTO;
+import seproject.worship.domain.dto.request.CartModifyMenuDTO;
+import seproject.worship.domain.dto.response.CartViewSpecificMenuDTO;
 import seproject.worship.service.CartService;
 
 import java.util.Map;

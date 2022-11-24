@@ -2,10 +2,10 @@ package seproject.worship.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import seproject.worship.dto.request.CustomerLoginDTO;
-import seproject.worship.dto.request.CustomerModifyInfoDTO;
-import seproject.worship.dto.request.CustomerSaveDTO;
-import seproject.worship.dto.response.CustomerLoadInfoDTO;
+import seproject.worship.domain.dto.request.CustomerLoginDTO;
+import seproject.worship.domain.dto.request.CustomerModifyInfoDTO;
+import seproject.worship.domain.dto.request.CustomerSaveDTO;
+import seproject.worship.domain.dto.response.CustomerLoadInfoDTO;
 import seproject.worship.service.CartService;
 import seproject.worship.service.CustomerService;
 import seproject.worship.service.OrderService;

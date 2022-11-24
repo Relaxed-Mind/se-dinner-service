@@ -1,7 +1,7 @@
 package seproject.worship.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import seproject.worship.entity.Item;
+import seproject.worship.domain.entity.Item;
 
 import java.util.Optional;
 

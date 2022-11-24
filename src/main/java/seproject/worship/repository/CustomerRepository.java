@@ -1,7 +1,7 @@
 package seproject.worship.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import seproject.worship.entity.Customer;
+import seproject.worship.domain.entity.Customer;
 
 import java.util.Optional;
 

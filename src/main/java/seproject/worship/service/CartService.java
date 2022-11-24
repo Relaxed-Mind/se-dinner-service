@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import seproject.worship.dto.request.CartAddMenuDTO;
-import seproject.worship.dto.request.CartModifyMenuDTO;
-import seproject.worship.dto.response.CartLoadMenuListDTO;
-import seproject.worship.dto.response.CartViewSpecificMenuDTO;
-import seproject.worship.entity.*;
-import seproject.worship.enumpack.StyleStatus;
+import seproject.worship.domain.dto.request.CartAddMenuDTO;
+import seproject.worship.domain.dto.request.CartModifyMenuDTO;
+import seproject.worship.domain.dto.response.CartLoadMenuListDTO;
+import seproject.worship.domain.dto.response.CartViewSpecificMenuDTO;
+import seproject.worship.domain.entity.*;
+import seproject.worship.domain.enumpack.StyleStatus;
 import seproject.worship.repository.*;
 import java.util.*;
 

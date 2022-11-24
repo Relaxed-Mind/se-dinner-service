@@ -1,10 +1,9 @@
 package seproject.worship.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import seproject.worship.entity.CartMenu;
+import seproject.worship.domain.entity.CartMenu;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CartMenuRepository extends JpaRepository<CartMenu, Long> {
 

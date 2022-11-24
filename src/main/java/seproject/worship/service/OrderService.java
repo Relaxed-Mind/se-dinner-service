@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import seproject.worship.dto.request.OrderDTO;
-import seproject.worship.dto.response.ViewSpecificMenuDTO;
-import seproject.worship.dto.response.beforeOrderDTO;
-import seproject.worship.entity.*;
-import seproject.worship.enumpack.OrderStatus;
+import seproject.worship.domain.dto.request.OrderDTO;
+import seproject.worship.domain.dto.response.ViewSpecificMenuDTO;
+import seproject.worship.domain.dto.response.beforeOrderDTO;
+import seproject.worship.domain.entity.*;
+import seproject.worship.domain.enumpack.OrderStatus;
 import seproject.worship.repository.*;
 
 import javax.transaction.Transactional;
