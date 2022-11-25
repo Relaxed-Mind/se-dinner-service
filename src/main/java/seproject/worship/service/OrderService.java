@@ -132,12 +132,24 @@ public class OrderService {
         //예외처리
         for (OrderMenu orderMenu : orderMenus) {
             Map<String, Object> map = new HashMap<>();
+            List<Map> foodList = new ArrayList<>();
+
             Menu menu = orderMenu.getMenu();
+            List<ModifiedItem> modifiedItems = modifiedItemRepository.findAllByOrderMenuId(orderMenu.getId());
+            for (ModifiedItem modifiedItem : modifiedItems) {
+                Map<String, Object> foodMap = new HashMap<>();
+                Item item = modifiedItem.getItem();
+                foodMap.put("name", item.getName());
+                foodMap.put("price", item.getPrice() * modifiedItem.getCount());
+                foodMap.put("itemCount", modifiedItem.getCount());
+                foodList.add(foodMap);
+            }
             map.put("menuName", menu.getName());
             map.put("menuURL", menu.getMenuUrl());
             map.put("styleStatus", orderMenu.getStyleStatus().name()); //name빼고 해보자
             map.put("count", orderMenu.getCount());
             map.put("orderMenuPrice", orderMenu.getOrderMenuPrice());
+            map.put("foods", foodList);
             targetList.add(map);
         }
         Map<String, Object> responseMap = new HashMap<>();
