@@ -145,6 +145,7 @@ public class CartService {
                         .count(modifiedItem.getCount())
                         .build();
                 tempItem.setCartMenu(cartMenu);
+                modifiedItemRepository.save(modifiedItem);
             }
 
             Map<String, Object> map = new HashMap<>();
