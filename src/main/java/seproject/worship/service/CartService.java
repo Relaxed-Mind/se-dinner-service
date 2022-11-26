@@ -53,7 +53,7 @@ public class CartService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "this menu already exist in cart");
 
         List<Map> foods = dto.getFoods();
-        Integer totalMenuPrice = getTotalMenuPrice(menu.get().getMenuPrice(), dto.getCount(), foods);
+        Integer totalMenuPrice = getTotalMenuPrice(menu.get().getMenuPrice(), dto.getCount(), foods, dto.getStyle());
 
         CartMenu cartMenu = makeCartMenu(dto, customer, menu, totalMenuPrice);
         cartMenuRepository.save(cartMenu);
@@ -89,10 +89,17 @@ public class CartService {
                 .build();
     }
 
-    public Integer getTotalMenuPrice(int price, int count, List<Map> foods){
+    public Integer getTotalMenuPrice(int price, int count, List<Map> foods, String style){
         Integer totalPrice = price * count;
         for (Map food : foods)
             totalPrice += (Integer) food.get("price");
+
+        if(style.equals("GRAND")){
+            totalPrice += 1000;
+        } else if(style.equals("DELUXE")){
+            totalPrice += 2000;
+        }
+
         return totalPrice;
     }
 
@@ -187,7 +194,8 @@ public class CartService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "menu not exist");
 
         List<Map> foods = dto.getFoods();
-        Integer totalMenuPrice = getTotalMenuPrice(menu.get().getMenuPrice(), dto.getCount(), foods);
+        Integer totalMenuPrice = getTotalMenuPrice(menu.get().getMenuPrice(), dto.getCount(), foods, dto.getStyle());
+
 
         CartMenu cartMenu = makeCartMenu(dto, customer, menu, totalMenuPrice);
         cartMenuRepository.save(cartMenu);
