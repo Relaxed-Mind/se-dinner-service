@@ -1,0 +1,89 @@
+
+/*body {
+	background: #ccc;
+	padding: 20px;	
+    text-align: center;
+}*/
+
+header {
+  height: 64px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+}
+
+#header{
+  width:1024px;
+  background-color: bisque;
+  height: 100%;
+  border-bottom: 1px solid gray;
+
+}
+
+article {
+  height: 100%;
+  background-color: beige;
+  width: 1024px;
+  margin : 0 auto;
+}
+
+#container {
+    width:600px;
+    margin:10px auto;
+  }
+  fieldset {
+    margin-bottom: 20px;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  ul li {
+    margin:10px;
+  }
+  
+  li label {
+    width:120px;
+    line-height: 36px;
+    float:left;
+    font-weight:bold;
+  }
+  
+  input[type="text"], input[type="password"], input[type="email"] {
+    width:300px;
+    height:30px;
+  }
+  
+  #buttons {
+    width:400px;
+    margin:20px auto;
+    text-align: center;
+  }
+  #buttons input {
+    width:150px;
+    height:50px;
+    font-size:20px;
+  }
+  #buttons input:hover {
+    background-color:rgb(27, 134, 221);
+    color:#fff;
+    border-color:#fff;
+  }
+  
+  select {
+    width:100px;
+    height:30px;
+  }
+  
+  footer{
+    height: 200px;
+    background-color: gray;
+    margin-top:20px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    color: whitesmoke;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+}
